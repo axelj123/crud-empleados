@@ -7,7 +7,7 @@ import {
 } from 'next-firebase-auth-edge';
  
 const PUBLIC_PATHS = ['/register', '/login', '/reset-password'];
- 
+const DEFAULT_AUTH_PATH = '/dashboard';
 export async function middleware(request: NextRequest) {
   return authMiddleware(request, {
     loginPath: '/api/login',
@@ -34,17 +34,10 @@ export async function middleware(request: NextRequest) {
     debug: true,
     checkRevoked: false,
     authorizationHeaderName: 'Authorization',
-    handleValidToken: async ({token, decodedToken}, headers) => {
-      if (PUBLIC_PATHS.includes(request.nextUrl.pathname)) {
-        return redirectToHome(request);
-      }
- 
-      return NextResponse.next({
-        request: {
-          headers
-        }
-      });
-    },
+
+     handleValidToken: async ({ token, decodedToken }, headers) => {
+        return NextResponse.redirect(new URL(DEFAULT_AUTH_PATH, request.url));
+      },
     handleInvalidToken: async (reason) => {
       console.info('Missing or malformed credentials', {reason});
  
