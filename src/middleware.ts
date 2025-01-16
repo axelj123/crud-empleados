@@ -34,17 +34,36 @@ export async function middleware(request: NextRequest) {
     debug: true,
     checkRevoked: false,
     authorizationHeaderName: 'Authorization',
-
-     handleValidToken: async ({ token, decodedToken }, headers) => {
-        return NextResponse.redirect(new URL(DEFAULT_AUTH_PATH, request.url));
-      },
+    
+    handleValidToken: async ({token, decodedToken}, headers) => {
+      // Si está en la ruta raíz, redirigir a dashboard
+      if (request.nextUrl.pathname === '/') {
+        return NextResponse.redirect(new URL('/dashboard', request.url));
+      }
+      
+      // Si está en rutas públicas y está autenticado, redirigir a dashboard
+      if (PUBLIC_PATHS.includes(request.nextUrl.pathname)) {
+        return NextResponse.redirect(new URL('/dashboard', request.url));
+      }
+    
+      // Para otras rutas, continuar normalmente
+      return NextResponse.next({
+        request: {
+          headers
+        }
+      });
+    },
+    
     handleInvalidToken: async (reason) => {
       console.info('Missing or malformed credentials', {reason});
- 
-      return redirectToLogin(request, {
-        path: '/login',
-        publicPaths: PUBLIC_PATHS
-      });
+      
+      // Si no está en una ruta pública, redirigir a login
+      if (!PUBLIC_PATHS.includes(request.nextUrl.pathname)) {
+        return NextResponse.redirect(new URL('/login', request.url));
+      }
+    
+      // Si está en una ruta pública, permitir el acceso
+      return NextResponse.next();
     },
     handleError: async (error) => {
       console.error('Unhandled authentication error', {error});
