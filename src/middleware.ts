@@ -2,12 +2,11 @@ import {NextResponse} from 'next/server';
 import type {NextRequest} from 'next/server';
 import {
   authMiddleware,
-  redirectToHome,
+
   redirectToLogin
 } from 'next-firebase-auth-edge';
  
 const PUBLIC_PATHS = ['/register', '/login', '/reset-password'];
-const DEFAULT_AUTH_PATH = '/dashboard';
 export async function middleware(request: NextRequest) {
   return authMiddleware(request, {
     loginPath: '/api/login',

@@ -49,7 +49,7 @@ function RegisterForm() {
           email: formData.email,
           name: formData.displayName
         };
-        
+
         await createUser(userData);
       } catch (dbError) {
         console.error("Error al guardar en la base de datos:", dbError);
@@ -83,39 +83,41 @@ function RegisterForm() {
     }
   };
 
-    const handleGoogleLogin = async () => {
-      setError(""); 
-  
-      try {
-        const user = await LoginWithGoogle(); 
-        const idTokenResult = await user.getIdTokenResult();  
-        await fetch("/api/login", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${idTokenResult.token}`,  
-          },
-        });
-        setIsLoading(true); 
+  const handleGoogleLogin = async () => {
+    setError("");
 
-        router.push("/dashboard");
-      } catch (error) {
-        toast.error("Error al iniciar sesión con Google", {className:"bg-red-500 text-white"});
-        setIsLoading(false); 
-      }
-    };
+    try {
+      const user = await LoginWithGoogle();
+      const idTokenResult = await user.getIdTokenResult();
+      await fetch("/api/login", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${idTokenResult.token}`,
+        },
+      });
+      setIsLoading(true);
+
+      router.push("/dashboard");
+    } catch (error) {
+      toast.error("Error al iniciar sesión con Google", { className: "bg-red-500 text-white" });
+      setIsLoading(false);
+    }
+  };
   return (
     <div className="">
       <div className="min-h-screen flex fle-col items-center justify-center py-6 px-4">
         <div className="grid md:grid-cols-2 items-center gap-10 max-w-6xl max-md:max-w-md w-full">
           <div>
             <h2 className="lg:text-5xl text-3xl font-extrabold lg:leading-[55px] dark:text-white text-gray-700">
-            Registro sin complicaciones para acceso exclusivo
+              Registro sin complicaciones para acceso exclusivo
             </h2>
             <p className="text-sm mt-6 dark:text-white text-gray-700">
-            Sumérgete en un proceso de registro sin complicaciones con nuestro formulario de registro diseñado de forma intuitiva.
-                        </p>
+              Aplicacion Crud de empleados by Axel Muñoz. 
+              <a href="https://axelmsilvadev.vercel.app/" className="bg-blue-600 text-white p-1 rounded-sm mx-2"> Mi sitio web</a>
+
+            </p>
             <p className="text-sm mt-12 dark:text-white text-gray-700">
-            ¿Ya tienes una cuenta? <Link href="/login" className="text-blue-600 font-semibold hover:underline ml-1">Ingresa aqui</Link>
+              ¿Ya tienes una cuenta? <Link href="/login" className="text-blue-600 font-semibold hover:underline ml-1">Ingresa aqui</Link>
             </p>
           </div>
 
