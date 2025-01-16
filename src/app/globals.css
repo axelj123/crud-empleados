@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  font-family: "Inter", serif;
+}
+::-webkit-scrollbar {
+  width: 12px;
+  /* Ancho de la barra de desplazamiento */
+  height: 12px;
+  /* Alto de la barra de desplazamiento horizontal */
+}
+
+::-webkit-scrollbar-track {
+  background: #313131;
+  /* Color del track (fondo) */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5a5959;
+  /* Color del pulgar */
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
