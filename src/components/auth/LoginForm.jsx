@@ -66,10 +66,10 @@ function LoginForm() {
             </h2>
             <p className="text-sm mt-6 dark:text-white text-gray-700">
               Aplicacion Crud de empleados by Axel Muñoz.
-              <a href="https://axelmsilvadev.vercel.app/" className="bg-blue-600 text-white p-1 rounded-sm mx-2"> Mi sitio web</a>
+              <a href="https://axelmsilvadev.vercel.app/" className="text-blue-600 font-semibold p-1 rounded-sm mx-1">Mi sitio web</a>
 
             </p>
-            <p className="text-sm mt-12 dark:text-white text-gray-700">
+            <p className="text-sm mt-4 dark:text-white text-gray-700">
               ¿No tienes una cuenta?
               <Link href="/register" className="text-blue-600 font-semibold hover:underline ml-1">Regístrate aquí</Link>
             </p>
