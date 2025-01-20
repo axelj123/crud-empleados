@@ -31,7 +31,7 @@ export function Header() {
       });
       window.location.reload();
     } catch (error) {
-      console.error("Error en logout:", error);
+
     }
   }
 

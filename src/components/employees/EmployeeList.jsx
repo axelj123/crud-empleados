@@ -38,7 +38,7 @@ export default function EmployeeList() {
                 }
             }
         } catch (error) {
-            console.error("Error completo:", error);
+
             toast.error('Error al obtener los empleados. El servidor no está disponible.');
         } finally {
             setIsLoading(false);
@@ -72,7 +72,7 @@ export default function EmployeeList() {
                 closeModal("isDelete");
                 toast.success('Empleado eliminado correctamente');
             } catch (error) {
-                console.error("Error deleting employee:", error);
+
                 toast.error('Error al eliminar el empleado');
             }
         }

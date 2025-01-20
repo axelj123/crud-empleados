@@ -52,7 +52,7 @@ function RegisterForm() {
 
         await createUser(userData);
       } catch (dbError) {
-        console.error("Error al guardar en la base de datos:", dbError);
+
         toast.error("Error al guardar datos de usuario");
         setIsLoading(false);
         return;
@@ -83,49 +83,62 @@ function RegisterForm() {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    setError("");
-  
-    try {
-      const user = await LoginWithGoogle();  
-      const idTokenResult = await user.getIdTokenResult();  
-  
-      const userData = {
-        uid: user.uid,
-        email: user.email,
-        name: user.displayName || user.email.split('@')[0],  
-      };
-  
-      const existingUser = await getUserByUid(user.uid);
-  
-      if (!existingUser) {
-        const createdUser = await createUser(userData);
-        console.log("Usuario creado:", createdUser);
-      } else {
-        console.log("Usuario ya existe, no es necesario crear.");
-      }
-  
-      const loginResponse = await fetch("/api/login", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${idTokenResult.token}`,
-        },
-      });
-  
-      if (!loginResponse.ok) {
-        throw new Error('Error al realizar login');
-      }
-  
-      setIsLoading(true);
-      router.push("/dashboard");  
-      toast.success("Inicio de sesión exitoso");
-  
-    } catch (error) {
-      setIsLoading(false);
-      console.error("Error en Google login:", error);
+   const handleGoogleLogin = async () => {
+     setError(""); 
+     setIsLoading(true); 
+   
+     try {
+       const user = await LoginWithGoogle();  
+       const idTokenResult = await user.getIdTokenResult();  
+   
+       const userData = {
+         uid: user.uid,
+         email: user.email,
+         name: user.displayName || user.email.split('@')[0],  
+       };
+   
+       let existingUser;
+       try {
+         existingUser = await getUserByUid(user.uid);
+       } catch (error) {
+
+        existingUser = null; 
+       }
+   
+       if (!existingUser) {
+ 
+         await createUser(userData);
+
+        } else {
+
+        }
+   
+ 
+       const loginResponse = await fetch("/api/login", {
+         method: "GET",
+         headers: {
+           Authorization: `Bearer ${idTokenResult.token}`, 
+           
+         },
+       });
+   
+       if (!loginResponse.ok) {
+         throw new Error('Error al realizar login');
+       }
+   
+ 
+       router.push("/dashboard");
+       toast.success("Inicio de sesión exitoso");
+   
+     } catch (error) {
+ 
+
       toast.error("Error al iniciar sesión con Google", { className: "bg-red-500 text-white" });
-    }
-  };
+     } finally {
+ 
+       setIsLoading(false);
+     }
+   };
   return (
     <div className="">
       <div className="min-h-screen flex fle-col items-center justify-center py-6 px-4">

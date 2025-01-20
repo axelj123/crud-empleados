@@ -23,7 +23,7 @@ export const useEmployeeForm = (initialData = null) => {
         const positionsData = await getPositions();
         setPositions(positionsData);
       } catch (error) {
-        console.error('Error al cargar posiciones:', error);
+
         toast.error("Error al cargar las posiciones");
       }
     };

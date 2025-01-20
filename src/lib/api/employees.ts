@@ -37,7 +37,7 @@ export const getEmployeesByUid = async (uid: string): Promise<EmployeeData[]> =>
 
         return data;
     } catch (error) {
-        console.error(`Error fetching employees by UID (${uid}):`, error);
+
         throw error;
     }
 };
@@ -57,7 +57,7 @@ export const createEmployee = async (employeeFormData: FormData): Promise<Employ
         const data: EmployeeData = await response.json();
         return data;
     } catch (error) {
-        console.error("Error creating employee:", error);
+
         throw error;
     }
 };
@@ -72,7 +72,7 @@ export const getEmployees = async (): Promise<EmployeeData[]> => {
         const data: EmployeeData[] = await response.json(); 
         return data;
     } catch (error) {
-        console.error("Error fetching employees:", error);
+
         throw error;
     }
 };
@@ -91,7 +91,7 @@ export const updateEmployee = async (id: number, employeeFormData: FormData): Pr
         const data: EmployeeData = await response.json();
         return data;
     } catch (error) {
-        console.error("Error updating employee:", error);
+
         throw error;
     }
 };
@@ -107,7 +107,7 @@ export const getEmployeeById = async (id: number): Promise<EmployeeData> => {
         const data: EmployeeData = await response.json(); 
         return data;
     } catch (error) {
-        console.error("Error fetching employee by ID:", error);
+
         throw error;
     }
 };
@@ -126,7 +126,7 @@ export const deleteEmployee = async (id: number): Promise<{ success: boolean }> 
         }
         return { success: true }; 
     } catch (error) {
-        console.error("Error deleting employee:", error);
+
         throw error;
     }
 };

@@ -56,16 +56,16 @@ function LoginForm() {
       try {
         existingUser = await getUserByUid(user.uid);
       } catch (error) {
-        console.log("Error al obtener el usuario:", error);
+
         existingUser = null; 
       }
   
       if (!existingUser) {
 
-        const createdUser = await createUser(userData);
-        console.log("Usuario creado:", createdUser);
+        await createUser(userData);
+
       } else {
-        console.log("Usuario ya existe, no es necesario crear.");
+
       }
   
 
@@ -87,7 +87,7 @@ function LoginForm() {
   
     } catch (error) {
 
-      console.error("Error en Google login:", error);
+
       toast.error("Error al iniciar sesión con Google", { className: "bg-red-500 text-white" });
     } finally {
 

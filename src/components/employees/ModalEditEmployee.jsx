@@ -59,7 +59,7 @@ export function UpdateEmployeeModal({ onClose, employee, onEmployeeUpdated }) {
         className: "bg-green-500 text-white"
       });
     } catch (error) {
-      console.error('Error:', error);
+
       toast.error("Error al actualizar el empleado. Por favor, intente nuevamente.");
     } finally {
       setIsLoading(false);

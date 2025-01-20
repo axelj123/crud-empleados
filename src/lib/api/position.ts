@@ -14,7 +14,7 @@ export const getPositions = async (): Promise<PositionData[]> => {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error("Error en la solicitud de posiciones:", error);
+
       return [];
     }
   };
