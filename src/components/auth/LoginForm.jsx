@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import LoadingButton from "../auth/LoadingBotton";
 import { toast } from "sonner";
 import { LoginWithGoogle } from "../../lib/firebase/auth";
+import { createUser, getUserByUid } from "../../lib/api/users";
 function LoginForm() {
 
   const [email, setEmail] = useState("");
@@ -39,21 +40,45 @@ function LoginForm() {
   }
   const handleGoogleLogin = async () => {
     setError("");
-    setIsLoading(true);
-
+  
     try {
-      const user = await LoginWithGoogle();
-      const idTokenResult = await user.getIdTokenResult();
-      await fetch("/api/login", {
+      const user = await LoginWithGoogle();  
+      const idTokenResult = await user.getIdTokenResult();  
+  
+      const userData = {
+        uid: user.uid,
+        email: user.email,
+        name: user.displayName || user.email.split('@')[0],  
+      };
+  
+      const existingUser = await getUserByUid(user.uid);
+  
+      if (!existingUser) {
+        const createdUser = await createUser(userData);
+        console.log("Usuario creado:", createdUser);
+      } else {
+        console.log("Usuario ya existe, no es necesario crear.");
+      }
+  
+      const loginResponse = await fetch("/api/login", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${idTokenResult.token}`,
         },
       });
-      router.push("/dashboard");
+  
+      if (!loginResponse.ok) {
+        throw new Error('Error al realizar login');
+      }
+  
+      setIsLoading(true);
+      router.push("/dashboard");  
+      toast.success("Inicio de sesión exitoso");
+  
     } catch (error) {
-      toast.error("Error al iniciar sesión con Google", { className: "bg-red-500 text-white" });
       setIsLoading(false);
+      console.error("Error en Google login:", error);
+      toast.error("Error al iniciar sesión con Google", { className: "bg-red-500 text-white" });
     }
   };
   return (

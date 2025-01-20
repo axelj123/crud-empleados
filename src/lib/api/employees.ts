@@ -19,7 +19,7 @@ export interface EmployeeData {
     dni: string;
     uid: string;
 }
-
+ 
 export const getEmployeesByUid = async (uid: string): Promise<EmployeeData[]> => {
     try {
         const response = await fetch(`${API_URL_USER}${uid}`);
