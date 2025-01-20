@@ -39,7 +39,8 @@ function LoginForm() {
     }
   }
   const handleGoogleLogin = async () => {
-    setError("");
+    setError(""); 
+    setIsLoading(true); 
   
     try {
       const user = await LoginWithGoogle();  
@@ -51,19 +52,28 @@ function LoginForm() {
         name: user.displayName || user.email.split('@')[0],  
       };
   
-      const existingUser = await getUserByUid(user.uid);
+      let existingUser;
+      try {
+        existingUser = await getUserByUid(user.uid);
+      } catch (error) {
+        console.log("Error al obtener el usuario:", error);
+        existingUser = null; 
+      }
   
       if (!existingUser) {
+
         const createdUser = await createUser(userData);
         console.log("Usuario creado:", createdUser);
       } else {
         console.log("Usuario ya existe, no es necesario crear.");
       }
   
+
       const loginResponse = await fetch("/api/login", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${idTokenResult.token}`,
+          Authorization: `Bearer ${idTokenResult.token}`, 
+          
         },
       });
   
@@ -71,16 +81,20 @@ function LoginForm() {
         throw new Error('Error al realizar login');
       }
   
-      setIsLoading(true);
-      router.push("/dashboard");  
+
+      router.push("/dashboard");
       toast.success("Inicio de sesión exitoso");
   
     } catch (error) {
-      setIsLoading(false);
+
       console.error("Error en Google login:", error);
       toast.error("Error al iniciar sesión con Google", { className: "bg-red-500 text-white" });
+    } finally {
+
+      setIsLoading(false);
     }
   };
+  
   return (
     <div className="">
       <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
